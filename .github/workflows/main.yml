@@ -1,10 +1,10 @@
 mkdir -p .github/workflows
 cat > .github/workflows/build.yml <<'YAML'
 name: Build and push (amd64)
-
-on:
+'on':
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -18,10 +18,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      # Buildx (native amd64 on GitHub runners)
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -35,13 +33,14 @@ jobs:
       - name: Build and push (linux/amd64)
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: ./Dockerfile
           platforms: linux/amd64
           push: true
           tags: ${{ env.IMAGE }}
 YAML
 
+# sanity check: ensure no tabs
+! grep -nP '\t' .github/workflows/build.yml || true
+
 git add .github/workflows/build.yml
-git commit -m "Fix CI: minimal GHCR build workflow (amd64)"
+git commit -m "Fix workflow YAML: quote 'on', proper indentation"
 git push
