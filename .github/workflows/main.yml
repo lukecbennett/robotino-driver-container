@@ -1,3 +1,4 @@
+# from your repo root
 mkdir -p .github/workflows
 
 cat > .github/workflows/docker.yml <<'YAML'
@@ -10,5 +11,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "it works"
-
 YAML
