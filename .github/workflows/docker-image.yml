@@ -1,0 +1,29 @@
+# Replace the workflow with the clean version
+cat > .github/workflows/docker.yml <<'YAML'
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+YAML
+
+# Normalize endings
+dos2unix .github/workflows/docker.yml
+sed -i '1s/^\xEF\xBB\xBF//' .github/workflows/docker.yml
+
+# Commit & push
+git add .github/workflows/docker.yml
+git commit -m "Add clean Docker build workflow"
+git push
