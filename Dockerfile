@@ -1,9 +1,9 @@
-# No --platform here; we’ll tell buildx to build amd64 in the workflow
-FROM osrf/ros:humble-ros-base-jammy
+# Use the official ROS image (Jammy by default)
+FROM ros:humble-ros-base
 ENV DEBIAN_FRONTEND=noninteractive
 SHELL ["/bin/bash","-lc"]
 
-# Basics
+# Basics + colcon
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl wget git locales tzdata \
     build-essential python3-pip python3-colcon-common-extensions \
@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN sed -i 's/^# *en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen && locale-gen
 ENV LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
-# Qt/Boost runtime for API2 (Jammy)
+# Qt/Boost runtime for API2 on Jammy
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libqt5core5a libqt5network5 libqt5xml5 libqt5dbus5 \
     libqt5gui5 libqt5widgets5 libqt5concurrent5 \
@@ -36,7 +36,7 @@ WORKDIR /opt/robotino_ws
 RUN source /opt/ros/humble/setup.bash && colcon build --symlink-install
 
 # Entrypoint
-RUN printf '#!/bin/bash\nset -e\nsource /opt/ros/humble/setup.bash\nsource /opt/robotino_ws/install/setup.bash\nexec "$@"\n' > /entrypoint.sh && \
+RUN printf '#!/bin/bash\nset -e\nsource /opt/ros/humble/setup.bash\nsource /opt/robotino_ws/install/setup.bash\nexec \"$@\"\n' > /entrypoint.sh && \
     chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["bash"]
