@@ -1,26 +1,14 @@
-# 1) Remove the old file to avoid cache/confusion
-git rm -f .github/workflows/main.yml 2>/dev/null || true
 mkdir -p .github/workflows
 
-# 2) Write a tiny workflow with clean UNIX newlines, no tabs, 'on' quoted
-cat > .github/workflows/ci.yml <<'YAML'
-name: ci
-'on': [push, workflow_dispatch]
+cat > .github/workflows/docker.yml <<'YAML'
+name: CI
+
+on: [push, pull_request]
 
 jobs:
-  hello:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - run: echo "YAML parsed OK ✅"
+      - run: echo "it works"
+
 YAML
-
-# 3) Quick sanity checks
-grep -nP '\t' .github/workflows/ci.yml && echo "Found a TAB (bad)!" || echo "No tabs ✅"
-file -b .github/workflows/ci.yml   # should say: ASCII text
-nl -ba .github/workflows/ci.yml | sed -n '1,25p'
-
-# 4) Commit & push
-git add .github/workflows/ci.yml
-git commit -m "Replace workflow with minimal valid YAML (quote 'on')"
-git push
