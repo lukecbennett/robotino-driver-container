@@ -1,17 +1,11 @@
-# Create workspace
-mkdir -p ~/robotino_driver_ws/src
-cd ~/robotino_driver_ws/src
-
-# Clone the driver
-git clone https://github.com/robocup-logistics/ros2-robotino.git
-
-# Install any ROS deps (should be minimal)
-cd ~/robotino_driver_ws
-rosdep install --from-paths src --ignore-src -r -y
-
-# Build
-colcon build --symlink-install
-
-# Source the workspace
-echo "source ~/robotino_driver_ws/install/setup.bash" >> ~/.bashrc
-source ~/.bashrc
+sudo apt update
+sudo apt install -y \
+  ros-jazzy-rosidl-default-generators \
+  ros-jazzy-rosidl-default-runtime \
+  ros-jazzy-rosidl-generator-cpp \
+  ros-jazzy-rosidl-generator-py \
+  ros-jazzy-rosidl-typesupport-fastrtps-cpp \
+  ros-jazzy-rosidl-typesupport-fastrtps-c \
+  ros-jazzy-rosidl-interface-libraries \
+  ros-jazzy-std-msgs ros-jazzy-geometry-msgs ros-jazzy-nav-msgs \
+  python3-empy
