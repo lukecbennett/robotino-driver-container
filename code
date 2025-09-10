@@ -1,11 +1,5 @@
-sudo apt update
-sudo apt install -y \
-  ros-jazzy-rosidl-default-generators \
-  ros-jazzy-rosidl-default-runtime \
-  ros-jazzy-rosidl-generator-cpp \
-  ros-jazzy-rosidl-generator-py \
-  ros-jazzy-rosidl-typesupport-fastrtps-cpp \
-  ros-jazzy-rosidl-typesupport-fastrtps-c \
-  ros-jazzy-rosidl-interface-libraries \
-  ros-jazzy-std-msgs ros-jazzy-geometry-msgs ros-jazzy-nav-msgs \
-  python3-empy
+rm -rf build install log
+colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release \
+  --event-handlers console_cohesion+
+# If it fails again, open the rto_msgs log:
+sed -n '1,200p' log/latest_build/*rto_msgs*/stdout_stderr.log
