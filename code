@@ -1,7 +1,7 @@
-# Install rosdep and supporting tools
-sudo apt update
-sudo apt -y install python3-rosdep python3-rosinstall-generator python3-vcstool build-essential
+sudo mkdir -p /etc/apt/keyrings
+curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
+  | sudo gpg --dearmor -o /etc/apt/keyrings/ros-archive-keyring.gpg
 
-# Initialize rosdep (only once per machine)
-sudo rosdep init
-rosdep update
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/ros-archive-keyring.gpg] \
+http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" \
+| sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
