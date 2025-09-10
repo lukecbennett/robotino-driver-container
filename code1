@@ -1,1 +1,8 @@
+# 1) Source ROS 2 Jazzy
+source /opt/ros/jazzy/setup.bash
 
+# 2) Source your robotino workspace (adjust path if different)
+source ~/robotino_driver_ws/install/setup.bash
+
+# 3) Verify the package is visible
+ros2 pkg list | grep -E '^rto_node$' || echo "rto_node still not visible"
