@@ -1,25 +1,17 @@
-# Enable Universe + tools
-sudo apt update
-sudo apt -y install software-properties-common
-sudo add-apt-repository universe -y
+# Create workspace
+mkdir -p ~/robotino_driver_ws/src
+cd ~/robotino_driver_ws/src
 
-# ROS 2 apt source + key
-sudo apt -y install curl gnupg lsb-release
-sudo mkdir -p /etc/apt/keyrings
-curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
-  | sudo gpg --dearmor -o /etc/apt/keyrings/ros-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/ros-archive-keyring.gpg] \
-http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" \
-| sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+# Clone the driver
+git clone https://github.com/robocup-logistics/ros2-robotino.git
 
-# Install ROS 2 Desktop + dev tools
-sudo apt update
-sudo apt -y install ros-jazzy-desktop python3-colcon-common-extensions python3-rosdep ros-dev-tools
+# Install any ROS deps (should be minimal)
+cd ~/robotino_driver_ws
+rosdep install --from-paths src --ignore-src -r -y
 
-# Initialize rosdep (first time only)
-sudo rosdep init || true
-rosdep update
+# Build
+colcon build --symlink-install
 
-# Auto-source ROS 2
-echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
+# Source the workspace
+echo "source ~/robotino_driver_ws/install/setup.bash" >> ~/.bashrc
 source ~/.bashrc
