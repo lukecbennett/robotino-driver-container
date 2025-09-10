@@ -1,5 +1,8 @@
-rm -rf build install log
-colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release \
-  --event-handlers console_cohesion+
-# If it fails again, open the rto_msgs log:
-sed -n '1,200p' log/latest_build/*rto_msgs*/stdout_stderr.log
+# 1) Source ROS 2 Jazzy
+source /opt/ros/jazzy/setup.bash
+
+# 2) Source your robotino workspace (adjust path if different)
+source ~/robotino_driver_ws/install/setup.bash
+
+# 3) Verify the package is visible
+ros2 pkg list | grep -E '^rto_node$' || echo "rto_node still not visible"
