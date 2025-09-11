@@ -6,3 +6,14 @@ source ~/robotino_driver_ws/install/setup.bash
 
 # 3) Verify the package is visible
 ros2 pkg list | grep -E '^rto_node$' || echo "rto_node still not visible"
+
+
+
+
+
+
+
+
+ros2 launch rto_node robotino_driverbringup.launch.py \
+  namespace:=robotino1 \
+  hostname:=192.168.0.31:12080
